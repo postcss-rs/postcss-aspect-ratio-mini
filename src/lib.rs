@@ -206,7 +206,7 @@ impl<'a, W: std::io::Write> VisitMut<'a, std::io::Result<()>> for SimplePrettier
     fn visit_declaration(&mut self, decl: &mut Declaration<'a>) -> std::io::Result<()> {
         write!(
             self.writer,
-            "{}{} : {};",
+            "{}{} : {};\n",
             " ".repeat(self.level * 2),
             decl.prop,
             decl.value

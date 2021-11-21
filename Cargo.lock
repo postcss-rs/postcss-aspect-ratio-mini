@@ -66,7 +66,7 @@ dependencies = [
 [[package]]
 name = "recursive-parser"
 version = "0.1.0"
-source = "git+https://github.com/postcss-rs/postcss-rs#65e60312fa6a3735e1184840fc1138162ea65487"
+source = "git+https://github.com/postcss-rs/postcss-rs#40f5954382144dd0b3bae647d0dec08143ea7069"
 dependencies = [
  "mimalloc-rust",
  "tokenizer",
@@ -107,7 +107,7 @@ checksum = "1ecab6c735a6bb4139c0caafd0cc3635748bbb3acf4550e8138122099251f309"
 [[package]]
 name = "tokenizer"
 version = "0.0.2"
-source = "git+https://github.com/postcss-rs/postcss-rs#65e60312fa6a3735e1184840fc1138162ea65487"
+source = "git+https://github.com/postcss-rs/postcss-rs#40f5954382144dd0b3bae647d0dec08143ea7069"
 dependencies = [
  "memchr",
  "once_cell",
