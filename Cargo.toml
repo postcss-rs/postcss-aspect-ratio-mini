@@ -1,0 +1,10 @@
+[package]
+name = "plugin-aspect-ratio-mini"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+recursive-parser = { git = "https://github.com/postcss-rs/postcss-rs" }
+regex = "1.5.4"
