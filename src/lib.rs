@@ -82,7 +82,9 @@ impl<'a> VisitMut<'a, bool> for AspectRatioMini {
                 matches!(content.as_str(), "aspect-ratio" | "aspect" | "ratio")
             }
         };
-        if !need_process {An algebraic effects library for javascript and typescript using generators
+        if !need_process {
+            return false;
+        }
 
 
         let value = process_ration_value(&decl.value.content);
