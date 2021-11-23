@@ -1,11 +1,9 @@
 .aspect-box {
     position: relative;
 }
-
 .aspect-box:before {
     padding-top: 300%;
 }
-
 .aspect-box:before {
     padding-top: 110%;
 }

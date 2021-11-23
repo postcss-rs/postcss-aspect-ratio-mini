@@ -24,8 +24,6 @@ fn main() {
     "#;
     let parser = Parser::new(css);
     let mut root = parser.parse();
-    AspectRatioMini::default().visit_root(&mut root);
-    let mut printer = SimplePrettier::new(Vec::new());
-    printer.visit_root(&mut root);
-    println!("{}", std::str::from_utf8(&printer.writer).unwrap());
+    let result = AspectRatioMini::transform(&mut root, 4);
+    println!("{}", result);
 }

@@ -1,11 +1,9 @@
 .aspect-box {
     position: relative;
 }
-
 [aspectratio][aspect-ratio="16:9"]:before {
     padding-top: 56.25%;
 }
-
 [aspectratio][aspect-ratio="16/9"]:before {
     padding-top: 56.25%;
 }

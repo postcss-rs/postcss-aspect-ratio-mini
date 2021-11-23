@@ -8,3 +8,6 @@ edition = "2021"
 [dependencies]
 recursive-parser = { git = "https://github.com/postcss-rs/postcss-rs" }
 regex = "1.5.4"
+
+[dev-dependencies]
+similar-asserts = "1.1.0"
