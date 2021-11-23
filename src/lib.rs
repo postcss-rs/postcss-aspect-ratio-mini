@@ -82,28 +82,14 @@ impl<'a> VisitMut<'a, bool> for AspectRatioMini {
                 matches!(content.as_str(), "aspect-ratio" | "aspect" | "ratio")
             }
         };
-        if !need_process {
-            return false;
-        }
+        if !need_process {An algebraic effects library for javascript and typescript using generators
+
+
         let value = process_ration_value(&decl.value.content);
         process_ratio_conf(decl, value);
         return true;
     }
 }
-
-// // 解析 aspect-ratio 的值，支持 : | / 三种分隔符，分隔符前后可以有一个或多个空格，例如：
-// // 16:9, 16 | 9, 16 / 9
-// function processRatioValue(css, rule, decl) {
-//   var ratio = null
-//   var re = /['"]?(((?:\d*\.?\d*)?)(?:\s*[\:\|\/]\s*)(\d*\.?\d*))['"]?/g
-
-//   ratio = decl.value
-//   ratio = ratio.replace(re, function(match, r, x, y) {
-//     return NP.times(NP.divide(y, x), 100) + '%' // Use number-precision module to fix JS calculation precision problem.
-//   })
-
-//   return ratio
-// }
 
 fn process_ration_value<'a>(decl: &'a Cow<'a, str>) -> String {
     let re = Regex::new(r#"['"]?(?:((?:\d*\.?\d*)?)(?:\s*[:|/]\s*)(\d*\.?\d*))['"]?"#).unwrap();
@@ -118,19 +104,6 @@ fn process_ration_value<'a>(decl: &'a Cow<'a, str>) -> String {
     })
     .to_string()
 }
-
-// function processRatioConf(css, rule, decl, ratio) {
-//   var sels = []
-
-//   ratio.pseudo = clone(defaults.pseudo)
-//   ratio.pseudo.source = decl.source
-
-//   for (var i = 0; i < rule.selectors.length; i++) {
-//     sels.push(rule.selectors[i] + ':before')
-//   }
-
-//   ratio.pseudo.selector = sels.join(', ')
-// }
 
 fn process_ratio_conf<'a>(decl: &mut Declaration<'a>, ratio: String) {
     decl.prop.content = Cow::Owned(format!("padding-top"));
