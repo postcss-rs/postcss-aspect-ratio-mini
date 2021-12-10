@@ -94,7 +94,7 @@ impl<'a> VisitMut<'a, bool> for AspectRatioMini {
 }
 
 fn process_ration_value<'a>(decl: &'a Cow<'a, str>) -> String {
-    let re = Regex::new(r#"['"]?(?:((?:\d*\.?\d*)?)(?:\s*[:|/]\s*)(\d*\.?\d*))['"]?"#).unwrap();
+    let re = Regex::new(r#"['"]?(?:((?:\d*\.?\d*)?)(?:\s*[/]\s*)(\d*\.?\d*))['"]?"#).unwrap();
     re.replace_all(&decl, |caps: &Captures| {
         let computed_result = caps[2]
             .parse::<f32>()
