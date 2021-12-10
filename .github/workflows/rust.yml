@@ -36,6 +36,7 @@ jobs:
         with:
           profile: minimal
           toolchain: nightly
+          components: rustfmt, clippy
           override: true
       - name: Check code format
         run: cargo fmt -- --check
