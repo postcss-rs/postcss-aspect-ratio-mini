@@ -10,4 +10,5 @@ recursive-parser = { git = "https://github.com/postcss-rs/postcss-rs" }
 regex = "1.5.4"
 
 [dev-dependencies]
+newline-converter = "0.2.0"
 similar-asserts = "1.1.0"
