@@ -86,7 +86,6 @@ impl<'a> VisitMut<'a, bool> for AspectRatioMini {
             return false;
         }
 
-
         let value = process_ration_value(&decl.value.content);
         process_ratio_conf(decl, value);
         return true;
