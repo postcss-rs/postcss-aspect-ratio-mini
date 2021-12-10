@@ -3,15 +3,12 @@ use std::{borrow::Cow, io::Write, ops::AddAssign};
 use recursive_parser::{parser::*, visitor::VisitMut, WrapString};
 use regex::{Captures, Regex};
 
+#[derive(Default)]
 pub struct AspectRatioMini {}
 
 impl AspectRatioMini {
-    pub fn new() -> Self {
-        Self {}
-    }
-
     pub fn transform(root: &mut Root, indent: usize) -> String {
-        let mut aspect = AspectRatioMini::new();
+        let mut aspect = AspectRatioMini::default();
         aspect.visit_root(root);
         let mut printer = SimplePrettier::new(WrapString::default(), indent);
         printer.visit_root(root).unwrap();
@@ -31,7 +28,7 @@ impl<'a> VisitMut<'a, bool> for AspectRatioMini {
                 unreachable!()
             }
         });
-        return false;
+        false
     }
     // TODO: add :before to every selector, waiting for selector-parser
     fn visit_rule(&mut self, rule: &mut Rule<'a>) -> bool {
@@ -52,7 +49,7 @@ impl<'a> VisitMut<'a, bool> for AspectRatioMini {
         if has_ratio_prop {
             rule.selector.content.add_assign(":before");
         }
-        return false;
+        false
     }
     fn visit_at_rule(&mut self, at_rule: &mut AtRule<'a>) -> bool {
         at_rule
@@ -69,7 +66,7 @@ impl<'a> VisitMut<'a, bool> for AspectRatioMini {
                     unreachable!()
                 }
             });
-        return false;
+        false
     }
 
     fn visit_declaration(&mut self, decl: &mut Declaration<'a>) -> bool {
@@ -86,19 +83,18 @@ impl<'a> VisitMut<'a, bool> for AspectRatioMini {
             return false;
         }
 
-
         let value = process_ration_value(&decl.value.content);
         process_ratio_conf(decl, value);
-        return true;
+        true
     }
 }
 
-fn process_ration_value<'a>(decl: &'a Cow<'a, str>) -> String {
+fn process_ration_value(decl: &str) -> String {
     let re = Regex::new(r#"['"]?(?:((?:\d*\.?\d*)?)(?:\s*[/]\s*)(\d*\.?\d*))['"]?"#).unwrap();
-    re.replace_all(&decl, |caps: &Captures| {
+    re.replace_all(decl, |caps: &Captures| {
         let computed_result = caps[2]
             .parse::<f32>()
-            .and_then(|y| caps[1].parse::<f32>().and_then(|x| Ok(y / x * 100f32)));
+            .and_then(|y| caps[1].parse::<f32>().map(|x| y / x * 100f32));
         match computed_result {
             Ok(value) => value.to_string() + "%",
             Err(_) => decl.to_string(),
@@ -107,8 +103,8 @@ fn process_ration_value<'a>(decl: &'a Cow<'a, str>) -> String {
     .to_string()
 }
 
-fn process_ratio_conf<'a>(decl: &mut Declaration<'a>, ratio: String) {
-    decl.prop.content = Cow::Owned(format!("padding-top"));
+fn process_ratio_conf(decl: &mut Declaration, ratio: String) {
+    decl.prop.content = Cow::Owned(("padding-top").to_string());
     decl.value.content = Cow::Owned(ratio);
 }
 
@@ -147,7 +143,7 @@ impl<'a, W: std::io::Write> VisitMut<'a, std::io::Result<()>> for SimplePrettier
     }
 
     fn visit_rule(&mut self, rule: &mut Rule<'a>) -> std::io::Result<()> {
-        self.writer.write(
+        self.writer.write_all(
             format!(
                 "{}{} {}\n",
                 " ".repeat(self.level * self.indent),
@@ -171,23 +167,17 @@ impl<'a, W: std::io::Write> VisitMut<'a, std::io::Result<()>> for SimplePrettier
             }
         }
         self.level -= 1;
-        write!(
-            self.writer,
-            "{}{}\n",
-            " ".repeat(self.level * self.indent),
-            "}"
-        )?;
+        writeln!(self.writer, "{}}}", " ".repeat(self.level * self.indent),)?;
         Ok(())
     }
 
     fn visit_at_rule(&mut self, at_rule: &mut AtRule<'a>) -> std::io::Result<()> {
-        write!(
+        writeln!(
             self.writer,
-            "{}{} {} {}\n",
+            "{}{} {} {{",
             " ".repeat(self.level * self.indent),
             at_rule.name,
             at_rule.params,
-            "{"
         )?;
         self.level += 1;
         for child in at_rule.children.iter_mut() {
@@ -204,18 +194,13 @@ impl<'a, W: std::io::Write> VisitMut<'a, std::io::Result<()>> for SimplePrettier
             }
         }
         self.level -= 1;
-        write!(
-            self.writer,
-            "{}{}\n",
-            " ".repeat(self.level * self.indent),
-            "}"
-        )
+        writeln!(self.writer, "{}}}", " ".repeat(self.level * self.indent),)
     }
 
     fn visit_declaration(&mut self, decl: &mut Declaration<'a>) -> std::io::Result<()> {
-        write!(
+        writeln!(
             self.writer,
-            "{}{}: {};\n",
+            "{}{}: {};",
             " ".repeat(self.level * self.indent),
             decl.prop,
             decl.value

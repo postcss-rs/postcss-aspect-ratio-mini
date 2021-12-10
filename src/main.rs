@@ -1,12 +1,9 @@
 use plugin_aspect_ratio_mini::AspectRatioMini;
-use recursive_parser::{
-    parser::Parser,
-    visitor::{Visit, VisitMut},
-};
-use std::{fmt::format, time::Instant};
+use recursive_parser::parser::Parser;
+use std::time::Instant;
 
 fn main() {
-    let css = r#"
+    let _css = r#"
     
     
     .aspect-box {
