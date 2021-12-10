@@ -1,7 +1,5 @@
 use plugin_aspect_ratio_mini::AspectRatioMini;
-use recursive_parser::{
-    parser::Parser,
-};
+use recursive_parser::parser::Parser;
 use std::time::Instant;
 
 fn main() {

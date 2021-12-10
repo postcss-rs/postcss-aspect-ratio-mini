@@ -5,7 +5,6 @@ mod test_basic {
     use plugin_aspect_ratio_mini::AspectRatioMini;
     use recursive_parser::parser::Parser;
 
-
     #[test]
     fn test_() -> std::io::Result<()> {
         let prefix_list = ["damo", "default", "double-quote", "precision"];
